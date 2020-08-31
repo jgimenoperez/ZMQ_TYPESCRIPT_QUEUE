@@ -1,0 +1,73 @@
+version: '3.3'
+    #docker run -d -p 9000:9000 --name portainer --restart=always -v "/var/run/docker.sock:/var/run/docker.sock" portainer/por
+services:
+                   
+    worker_nodezqm:
+        image: puzolmongol/nodezmq:latest
+        container_name: worker_nodezqm
+        networks:
+            test:
+                ipv4_address: '10.1.0.100'
+        environment:
+            ipproducer: 10.1.0.101             
+        entrypoint: node ./build/worker.js
+        restart: always                
+
+    producer_nodezqm:
+        image: puzolmongol/nodezmq:latest
+        depends_on: 
+            - worker_nodezqm
+        container_name: producer_nodezqm
+        entrypoint:  node ./build/producer.js
+        networks:
+            test:
+                ipv4_address: '10.1.0.101'
+        logging:
+            driver: fluentd  
+            options:  
+                tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"                  
+                
+        restart: always
+
+    pubber_nodezqm:
+        image: puzolmongol/nodezmq:latest
+        container_name: pubber_nodezqm
+        entrypoint: node ./build/pubber.js
+        networks:
+            test:
+                ipv4_address: '10.1.0.102'
+        restart: always                     
+
+    subber_nodezqm:
+        image: puzolmongol/nodezmq:latest
+        container_name: subber_nodezqm
+        networks:
+            test:
+                ipv4_address: '10.1.0.103'
+        environment:
+            ippubber: 10.1.0.102            
+        entrypoint: node ./build/subber.js
+        restart: always   
+    
+
+
+  #  watchtower:
+  #      image: v2tec/watchtower
+  #      volumes:
+  #          - /var/run/docker.sock:/var/run/docker.sock
+  #          - /root/.docker/config.json:/config.json
+  #      command: --interval 30
+  #docker run -d   --name watchtower   -v /var/run/docker.sock:/var/run/docker.sock   v2tec/watchtower --interval 5
+
+networks:
+  test:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.1.0.0/24                
+
+
+        #./run.sh
+        # sudo dockerd
+        # sudo mkdir /sys/fs/cgroup/systemd
+        # sudo mount -t cgroup -o none,name=systemd cgroup /sys/fs/cgroup/systemd

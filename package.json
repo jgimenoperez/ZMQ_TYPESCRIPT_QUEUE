@@ -1,0 +1,28 @@
+{
+  "name": "ZMQ_TYPESCRIPT_QUEUE",
+  "version": "1.0.0",
+  "description": "El bridge envia la peticion asignandole un id (ver mas abajo)\r El broker recoge el mensaje y lo Valida \r   si es ok lo mando con suscripcion \r   Hay qeu gestionar sistemas de cola para peticiones proecesad y no procesadas\r   Lo primero que debe de hacer el broker es retonmar las peticiones encoladas y no proecesadas y procesarlas.\r El bridgw que corresponda lo regoge y lo PerformanceMeasure",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "clean": "del build /q",
+    "dev": "concurrently \"tsc -w\" \"nodemon ./build/dev_producer.js\"",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm run clean && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jgimenoperez/ZMQ_TYPESCRIPT_QUEUE.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jgimenoperez/ZMQ_TYPESCRIPT_QUEUE/issues"
+  },
+  "homepage": "https://github.com/jgimenoperez/ZMQ_TYPESCRIPT_QUEUE#readme",
+  "dependencies": {
+    "nodemon": "^2.0.4",
+    "zeromq": "^5.2.0"
+  }
+}
