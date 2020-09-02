@@ -19,7 +19,7 @@ enum TypesMessage {
 var TypeMessage = TypesMessage.msgNewSalesOrder;
 
 //sock.bindSync("tcp://10.1.0.101:3000");
-envia.bindSync("tcp://127.0.0.1:3000");
+envia.bind("tcp://127.0.0.1:3000");
 console.log("Envia: a puerto 3000");
 
 recibe.connect("tcp://127.0.0.1:3001");
@@ -41,6 +41,8 @@ setInterval(function () {
       TypeMessage + "#" + Bridge_name + "#" + time_stamp + "#" + count;
     console.log("ENVIO DATOS :" + tag_envio);
     envia.send(tag_envio);
+  }else{
+    envia.send('Inicio_proceso');
   }
 }, 500);
 
