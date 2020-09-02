@@ -115,7 +115,6 @@ function InicioConexiones2() {
                 envia_conectado = true;
             }
         });
-        envia.send("todo_ok");
         console.log("Todos los suscriptores conectados");
         //publica.bindSync("tcp://127.0.0.1:3002");
     }
@@ -208,11 +207,6 @@ async function esperar() {
   console.log(2);
 }
 */
-function sleep(ms) {
-    return new Promise(function (resolve) {
-        setTimeout(resolve, ms);
-    });
-}
 /*
 server.on("message", function (request: any) {
 

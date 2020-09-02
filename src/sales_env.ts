@@ -5,8 +5,8 @@ const envia = zmq.socket("push"), //envia a sales_recs
 
 const Bridge_name: string = "SALES";
 //tienen que estar montada antes el servicio que escuche y los sucriptores
+var inicio_proceso:boolean=true
 var todo_ok: boolean = false;
-
 var count: number = 0;
 var time_stamp: string;
 var tag_envio: string;
@@ -41,11 +41,12 @@ setInterval(function () {
       TypeMessage + "#" + Bridge_name + "#" + time_stamp + "#" + count;
     console.log("ENVIO DATOS :" + tag_envio);
     envia.send(tag_envio);
-  }else{
+  } else if (inicio_proceso==true) {
     envia.send('Inicio_proceso');
+    inicio_proceso=false
   }
 }, 500);
-
+//inicio_proceso
 recibe.on("message", function (msg: any) {
   var estado_recepcion: string[];
   if (String(msg)=='todo_ok') {

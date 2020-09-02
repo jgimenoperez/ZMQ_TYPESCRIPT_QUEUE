@@ -71,7 +71,7 @@ function InicioConexiones2() {
         envia_conectado = true;
       }
     });
-    envia.send("todo_ok");
+    
     console.log("Todos los suscriptores conectados");
     //publica.bindSync("tcp://127.0.0.1:3002");
   }
@@ -100,8 +100,7 @@ publica.on("accept", function (fd, ep) {
   counter++;
   console.log("counter:" + String(counter));
   if (total_suscriptores == counter) {
-    InicioConexiones2();
-
+    InicioConexiones2()
     envia.send("todo_ok");
   } else {
     console.log("Faltan suscriptores");
@@ -169,12 +168,6 @@ async function esperar() {
   console.log(2);
 }
 */
-
-function sleep(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
 
 /*
 server.on("message", function (request: any) {
