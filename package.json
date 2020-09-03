@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "clean": "del build /q",
-    "dev": "concurrently \"tsc -w\" \"nodemon ./build/dev_producer.js\"",
+    "dev": "concurrently \"tsc -w\" \"nodemon ./build/producer.js\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run clean && npm run build"
   },
@@ -22,6 +22,8 @@
   },
   "homepage": "https://github.com/jgimenoperez/ZMQ_TYPESCRIPT_QUEUE#readme",
   "dependencies": {
+    "@types/node": "^14.6.2",
+    "@types/zeromq": "^4.6.3",
     "nodemon": "^2.0.4",
     "zeromq": "^5.2.0"
   }

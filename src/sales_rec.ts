@@ -51,15 +51,11 @@ function InicioConexiones2() {
     });
   }
 
+
   if (recibe_conectado == false) {
     //recibe.connect("tcp://127.0.0.1:3000");
-    recibe.connect("tcp://127.0.0.1:3000", function (err: any) {
-      if (err) console.log("bbb");
-      else {
-        console.log("Recibiendo de puerto 3000...");
-        recibe_conectado = true;
-      }
-    });
+    recibe.connect("tcp://127.0.0.1:3000")
+    console.log("Recibiendo de puerto 3000...");
   }
 
   if (envia_conectado == false) {

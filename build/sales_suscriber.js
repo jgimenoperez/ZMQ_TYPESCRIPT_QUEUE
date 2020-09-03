@@ -20,13 +20,20 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var zmq = __importStar(require("zeromq"));
-var sock = zmq.socket('pub');
-//sock.bindSync('tcp://10.1.0.102:3001');
-sock.bindSync('tcp://127.0.0.1:3001');
-console.log('Publisher bound to port 3001');
-setInterval(function () {
-    console.log('sending a multipart message envelope');
-    sock.send(['kitty cats', 'meow!']);
-}, 500);
-//Pubber.js-------subscriber.js 
-//(Subscriber queda a la espera de pubber pero con suscripcion
+var suscrito = zmq.socket('sub');
+var client = zmq.socket('req');
+suscrito.connect('tcp://127.0.0.1:3002');
+client.connect('tcp://localhost:3003');
+client.send('CONECTO');
+suscrito.subscribe('SALES');
+console.log('Subscriber conectado al puerto 3002');
+suscrito.on('message', function (topic, message) {
+    console.log(topic.toString(), 'containing message:', message.toString());
+});
+/*
+process.on('SIGINT', function() {
+  client.send('DESCONECTO')
+  client.close()
+  console.log('Subscriber desconectado del puerto 3002');
+})
+*/
