@@ -108,9 +108,9 @@ function InicioConexiones2() {
     }
     if (envia_conectado == false) {
         //envia.bindSync("tcp://127.0.0.1:3001");
-        envia.bind("tcp://10.1.1.101:3001", function (err) {
+        envia.bind("tcp://10.1.0.101:3001", function (err) {
             if (err)
-                console.log("cccc");
+                console.log(err);
             else {
                 console.log("Enviado a puerto 3001...");
                 envia_conectado = true;

@@ -42,9 +42,9 @@ services:
         entrypoint: node ./build/sales_rec.js
         restart: always                
 
-    sales_suscriber:
+    sales_suscriber1:
         image: puzolmongol/nodezmq_v2:latest
-        container_name: sales_suscriber
+        container_name: sales_suscriber1
         networks:
             test:
                 ipv4_address: '10.1.0.102'
@@ -59,6 +59,22 @@ services:
         entrypoint: node ./build/sales_suscriber.js
         restart: always                     
 
+    sales_suscriber2:
+        image: puzolmongol/nodezmq_v2:latest
+        container_name: sales_suscriber2
+        networks:
+            test:
+                ipv4_address: '10.1.0.103'
+        #logging:
+        #     driver: fluentd  
+        #    options:  
+        #        tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"  
+
+        environment:
+            ip_sales_rec: 10.1.0.101  
+                
+        entrypoint: node ./build/sales_suscriber.js
+        restart: always           
 
 
   #  watchtower:
