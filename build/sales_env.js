@@ -86,7 +86,7 @@ recibe.on("message", function (msg) {
           Si el estado de la recepcion es KO
           se deberia de marcar el mensajde de la cola de entrdada como
           incorrecto y no procesado
-    
+          
         */
     }
 });

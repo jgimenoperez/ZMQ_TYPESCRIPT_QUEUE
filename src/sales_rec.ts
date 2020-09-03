@@ -27,7 +27,7 @@ async function InicioConexiones() {
   console.log("Recibe: Escuchando en puerto:3000");
 
   //PRIMERO CREO LA PUBLICACION. EN EL EVENTO AL CONECTARSE LOS SUCRIPTORES CREO TODAS LAS DEMAS CONEXIONES
-  publica.bind("tcp://10.1.1.101:3002", function (err) {
+  publica.bind("tcp://10.1.0.101:3002", function (err) {
     if (err) {
       console.log(err);
     } else {
