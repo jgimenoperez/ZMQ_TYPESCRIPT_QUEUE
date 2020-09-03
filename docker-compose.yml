@@ -1,54 +1,64 @@
 version: '3.3'
     #docker run -d -p 9000:9000 --name portainer --restart=always -v "/var/run/docker.sock:/var/run/docker.sock" portainer/por
 services:
-                   
-    worker_nodezqm:
-        image: puzolmongol/nodezmq:latest
-        container_name: worker_nodezqm
+
+    sales_env_nodezqm:
+        image: puzolmongol/nodezmq_v2:latest
+        #depends_on: 
+        #    - sales_rec_nodezqm
+        container_name: sales_env_nodezqm
+        entrypoint:  node ./build/sales_env.js
         networks:
             test:
                 ipv4_address: '10.1.0.100'
+        logging:
+            driver: fluentd  
+            options:  
+                tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"                  
+        
         environment:
-            ipproducer: 10.1.0.101             
-        entrypoint: node ./build/worker.js
-        restart: always                
+            ip_sales_rec: 10.1.0.101                    
 
-    producer_nodezqm:
-        image: puzolmongol/nodezmq:latest
-        depends_on: 
-            - worker_nodezqm
-        container_name: producer_nodezqm
-        entrypoint:  node ./build/producer.js
+        restart: always
+
+    sales_rec_nodezqm:
+        image: puzolmongol/nodezmq_v2:latest
+        #depends_on: 
+        #    - sales_env_nodezqm       
+        #    - sales_suscriber
+        container_name: sales_rec_nodezqm
         networks:
             test:
                 ipv4_address: '10.1.0.101'
         logging:
             driver: fluentd  
             options:  
-                tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"                  
-                
-        restart: always
+                tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"  
 
-    pubber_nodezqm:
-        image: puzolmongol/nodezmq:latest
-        container_name: pubber_nodezqm
-        entrypoint: node ./build/pubber.js
+        environment:
+        - ip_sales_env=10.1.0.100
+        - ip_sales_suscriber=10.1.0.102
+            
+        entrypoint: node ./build/sales_rec.js
+        restart: always                
+
+    sales_suscriber:
+        image: puzolmongol/nodezmq_v2:latest
+        container_name: sales_suscriber
         networks:
             test:
                 ipv4_address: '10.1.0.102'
+        logging:
+            driver: fluentd  
+            options:  
+                tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"  
+
+        environment:
+            ip_sales_rec: 10.1.0.101  
+                
+        entrypoint: node ./build/sales_suscriber.js
         restart: always                     
 
-    subber_nodezqm:
-        image: puzolmongol/nodezmq:latest
-        container_name: subber_nodezqm
-        networks:
-            test:
-                ipv4_address: '10.1.0.103'
-        environment:
-            ippubber: 10.1.0.102            
-        entrypoint: node ./build/subber.js
-        restart: always   
-    
 
 
   #  watchtower:

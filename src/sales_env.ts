@@ -19,10 +19,11 @@ enum TypesMessage {
 var TypeMessage = TypesMessage.msgNewSalesOrder;
 
 //sock.bindSync("tcp://10.1.0.101:3000");
-envia.bind("tcp://127.0.0.1:3000");
+envia.bind("tcp://10.1.0.100:3000");
 console.log("Envia: a puerto 3000");
 
-recibe.connect("tcp://127.0.0.1:3001");
+recibe.connect('tcp://' + process.env.ip_sales_rec +':3001');
+//recibe.connect("tcp://127.0.0.1:3001");
 console.log("Recibe: Escuchando en puerto:3001");
 
 setInterval(function () {

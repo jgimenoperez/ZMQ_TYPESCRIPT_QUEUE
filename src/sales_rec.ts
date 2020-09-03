@@ -2,13 +2,12 @@ import * as zmq from "zeromq";
 
 const recibe = zmq.socket("pull"), //recibe de sales_env
   envia = zmq.socket("push"), //envia a sales_env
-  publica = zmq.socket("pub"), //crea una publicacion
-  server = zmq.socket("rep"); //recibe de sales_suscriber
+  publica = zmq.socket("pub") //crea una publicacion
+
 
 var recibe_conectado: boolean = false;
 var envia_conectado: boolean = false;
 var publica_conectado: boolean = false;
-var server_conectado: boolean = false;
 
 const total_suscriptores: number = 2;
 var ok_nook: number;
@@ -28,7 +27,7 @@ async function InicioConexiones() {
   console.log("Recibe: Escuchando en puerto:3000");
 
   //PRIMERO CREO LA PUBLICACION. EN EL EVENTO AL CONECTARSE LOS SUCRIPTORES CREO TODAS LAS DEMAS CONEXIONES
-  publica.bind("tcp://127.0.0.1:3002", function (err) {
+  publica.bind("tcp://10.1.1.101:3002", function (err) {
     if (err) {
       console.log(err);
     } else {
@@ -41,26 +40,15 @@ async function InicioConexiones() {
 function InicioConexiones2() {
   console.log("Envia: Escuchando en puerto:3001");
 
-  if (server_conectado == false) {
-    server.bind("tcp://127.0.0.1:3003", function (err: any) {
-      if (err) console.log("aaa");
-      else {
-        console.log("Recibiendo de puerto 3003...");
-        server_conectado = true;
-      }
-    });
-  }
-
-
   if (recibe_conectado == false) {
     //recibe.connect("tcp://127.0.0.1:3000");
-    recibe.connect("tcp://127.0.0.1:3000")
+    recibe.connect('tcp://' + process.env.ip_sales_env +':3000')
     console.log("Recibiendo de puerto 3000...");
   }
 
   if (envia_conectado == false) {
     //envia.bindSync("tcp://127.0.0.1:3001");
-    envia.bind("tcp://127.0.0.1:3001", function (err: any) {
+    envia.bind("tcp://10.1.1.101:3001", function (err: any) {
       if (err) console.log("cccc");
       else {
         console.log("Enviado a puerto 3001...");

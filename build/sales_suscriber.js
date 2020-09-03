@@ -21,10 +21,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var zmq = __importStar(require("zeromq"));
 var suscrito = zmq.socket('sub');
-var client = zmq.socket('req');
-suscrito.connect('tcp://127.0.0.1:3002');
-client.connect('tcp://localhost:3003');
-client.send('CONECTO');
+//suscrito.connect('tcp://127.0.0.1:3002');
+suscrito.connect('tcp://' + process.env.ip_sales_rec + ':3002');
 suscrito.subscribe('SALES');
 console.log('Subscriber conectado al puerto 3002');
 suscrito.on('message', function (topic, message) {
